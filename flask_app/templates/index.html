@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="card bg-dark text-white">
+    {% for idea in ideas %}
+    <div class="card m-4">
+        <h2 class="text-primary text-center">{{idea.title}}</h2>
+        <p>{{idea.description}}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

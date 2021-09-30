@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/register_form.js')}}"></script>
+{% endblock %}
+{% block content %}
+<div class="card bg-dark p-4">
+    <form action="/users/new" method="POST" class="card border border-dark p-4 my-2" id="regform">
+        <h2 class="text-primary text-center">Register</h2>
+        <input type="text" name="username" id="username" class="form-control my-2" placeholder="Username">
+        <div id="username_message"></div>
+        <input type="email" name="email" id="email" class="form-control my-2" placeholder="Email">
+        <div id="email_message"></div>
+        <input type="password" name="password" id="password" class="form-control my-2" placeholder="Password">
+        <div id="password_message"></div>
+        <input type="password" name="confirm_password" id="confirm_password" class="form-control my-2" placeholder="Confirm Password">
+        <div id="confirm_password_message"></div>
+        <input type="submit" value="Register" id="submit" class="btn btn-primary m-2">
+    </form>
+</div>
+{% endblock %}

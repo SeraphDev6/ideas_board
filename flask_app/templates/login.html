@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/login_form.js')}}"></script>
+{% endblock %}
+{% block content %}
+<div class="card bg-dark p-4">
+    <form action="/" method="POST" class="card border border-dark p-4 my-2" id="logform">
+        <h2 class="text-primary text-center">Login</h2>
+        <input type="text" name="email" id="email" class="form-control my-2" placeholder="Email">
+        <input type="password" name="password" id="password" class="form-control my-2" placeholder="Password">
+        <div id="login_message"></div>
+        <input type="submit" value="Login" id="submit" class="btn btn-primary m-2">
+    </form>
+</div>
+{% endblock %}

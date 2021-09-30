@@ -1,0 +1,8 @@
+{% if reason == 'short' %}
+<p class="text-danger text-center">Username must be at least 3 characters long.</p>
+{% elif reason == 'long' %}
+<p class="text-danger text-center">Username must be less than 45 characters long.</p>
+{% elif reason == 'taken' %}
+<p class="text-danger text-center">Username Taken.</p>
+{% endif %}
+

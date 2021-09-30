@@ -1,0 +1,8 @@
+{% if reason == 'not_email' %}
+<p class="text-danger text-center">Invalid Email.</p>
+{% elif reason == 'long' %}
+<p class="text-danger text-center">Email must be less than 100 characters long.</p>
+{% elif reason == 'taken' %}
+<p class="text-danger text-center">Email has already been used. Try <a href="/login">Logging in</a>.</p>
+{% endif %}
+
