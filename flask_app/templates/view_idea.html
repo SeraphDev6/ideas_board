@@ -21,7 +21,8 @@
             <div id="team_members" class="text-center my-0">
                 {% for user in idea.team %}
                 <a href="/users/{{user.id}}" class="text-white">{{user.username}}{% if user.id == session['user'] %} (You) {% endif %}</a><br>
-                {% if user.id == session['user'] %}
+                {% endfor %}
+                {% for user in idea.team if user.id == session['user'] %}
                 {% if not idea.github_url %}
                 <div id="github" class="p-4 text-center">
                     <form action="#" method="POST" id="gitform">
@@ -31,7 +32,6 @@
                         <input type="hidden" name="idea" value="{{idea.id}}">
                     </form>
                 </div>
-                {% endif %}
                 {% endif %}
                 {% endfor %}
             </div>
@@ -46,6 +46,7 @@
             {% endif %}
         </div>
         {% for user in idea.team if user.id == session['user'] %}
+        {% if idea.requests %}
         <div class="card m-4">
             <h2 class="text-center">Requests to join:</h2>
             {% for request in idea.requests %}
@@ -59,7 +60,9 @@
                 </div>
             </div>
             {% endfor %}
+
         </div>
+        {% endif %}
         <div class="card m-4 px-4 pb-2">
             <h2 class="text-center">Post Update:</h2>
             <div>
