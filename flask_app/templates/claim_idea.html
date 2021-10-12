@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block title %}New Idea{% endblock %}
+
+{% block content %}
+<div class="card bg-dark p-4">
+    <form action="/ideas/claim_idea" method="POST" class="card border border-dark p-4 my-2 text-white" id="ideaform">
+            <h1 class="text-primary text-center">Claim Idea</h1>
+            <input type="text" name="title" id="title" class="form-control my-2 bg-secondary bg-gradient" placeholder="Idea Title" maxlength="60" value="{{idea.title}}" readonly >
+            <div id="title_message"></div>
+            <input type="text" name="description" id="description" class="form-control my-2 bg-secondary bg-gradient" placeholder="Short description" maxlength="150" value="{{idea.description}}" readonly disabled>
+            <div id="description_message"></div>
+            <textarea name="explanation" id="explanation" cols="30" rows="5" placeholder="Explanation of Idea" class="form-control my-2 bg-secondary bg-gradient" readonly disabled>{{idea.explanation}}</textarea>
+            <div id="explanation_message"></div>
+            <p>Will You be working on this Idea?<p>
+                <label for="yes">
+                    <input type="radio" name="include_user" id="yes" value="1" class="radio"checked>
+                    Yes
+                </label>
+                <br>
+                <label for="no">
+                    <input type="radio" name="include_user" id="no" value="0" class="radio" disabled >
+                    No
+                </label>
+                <div id="secondary">
+            {% if stacks %}
+                <p>Which stack will this Idea be using?</p>
+                <select name="stack_id" id="stack_id" class="form-select mb-2">
+                {% for stack in stacks %}
+                    <option value="{{stack.stack_id}}">{{stack.name}}</option>
+                {% endfor %}
+                </select>
+            {% endif %}
+
+        </div>
+        <input type="submit" id="submit" value="Claim Idea" class="btn btn-primary btn-sm" role="button">
+    </form>
+</div>
+{% endblock %}

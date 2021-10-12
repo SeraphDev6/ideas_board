@@ -1,0 +1,15 @@
+{% for user in idea.team %}
+<a href="/users/{{user.id}}" class="text-white">{{user.username}}{% if user.id == session['user'] %} (You) {% endif %}</a><br>
+{% if user.id == session['user'] %}
+{% if not idea.github_url %}
+<div id="github" class="p-4 text-center">
+    <form action="#" method="POST" id="gitform">
+        <input type="text" name="github_url" id="github_url" placeholder="Add a GitHub URL here" class="form-control my-2">
+        <div id="git_message"></div>
+        <input type="submit" value="Add URL" class="btn btn-sm btn-primary" id='submit'>
+        <input type="hidden" name="idea" value="{{idea.id}}">
+    </form>
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}

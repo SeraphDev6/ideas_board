@@ -1,0 +1,5 @@
+{% if reason == 'short' %}
+<p class="text-danger text-center">Title must be at least 3 characters long.</p>
+{% elif reason == 'unique' %}
+<p class="text-danger text-center">Title already taken, try another title.</p>
+{% endif %}

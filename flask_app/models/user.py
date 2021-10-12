@@ -1,5 +1,6 @@
-from flask_app.models.stack import Stack
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app.models.stack import Stack
+# from flask_app.models.idea import Idea
 from flask_app.config.regex import EMAIL_REGEX,CAP_REGEX,SYM_REGEX,NUM_REGEX
 from flask_app import bcrypt
 
@@ -14,6 +15,9 @@ class User:
         self.created_at=data['created_at']
         self.updated_at=data['updated_at']
         self.known_stacks= Stack.get_stacks_by_id({'id':data['id']})
+        self.teams_on = User.get_teams_by_user({'id':data['id']})
+        self.invites = User.get_invites({'id':data['id']})
+
     def validate_pw(self,pw):
         return bcrypt.check_password_hash(self.password,pw)
     @classmethod
@@ -67,3 +71,30 @@ class User:
     def save(cls,data):
         query="INSERT INTO users(email, username, password) VALUES(%(email)s, %(username)s, %(password)s);"
         return connectToMySQL().query_db(query,User.encrypt_password(data))
+
+    @staticmethod
+    def get_teams_by_user(data):
+        query = "SELECT * FROM teams JOIN ideas ON teams.idea_id = ideas.id WHERE teams.user_id = %(id)s ORDER BY ideas.created_at DESC;"
+        from_db=connectToMySQL().query_db(query,data)
+        # arr=[]
+        # for idea in from_db:
+        #     arr.append(Idea(idea))
+        # return arr
+        return from_db
+
+    @staticmethod
+    def valid_update(id,data):
+        user = User.get_by_id({'id':id})
+        if(100<len(data['username'])<3):
+            return False
+        return True
+    
+    @staticmethod
+    def update(id,data):
+        query=f"UPDATE users SET username=%(username)s, github_profile=%(github_profile)s WHERE id={str(id)};"
+        return connectToMySQL().query_db(query,data)
+
+    @staticmethod
+    def get_invites(data):
+        query = "SELECT * FROM invitations JOIN teams ON invitations.team_id = teams.idea_id JOIN ideas ON ideas.id = teams.idea_id WHERE invitations.user_id = %(id)s AND user_initiated = 0;"
+        return connectToMySQL().query_db(query,data)

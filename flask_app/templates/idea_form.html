@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block title %}New Idea{% endblock %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/idea_form.js')}}"></script>
+{% endblock %}
+{% block content %}
+<div class="card bg-dark p-4">
+    <form action="/ideas/create" method="POST" class="card border border-dark p-4 my-2 text-white" id="ideaform">
+        <h1 class="text-primary text-center">New Idea</h1>
+        <input type="text" name="title" id="title" class="form-control my-2" placeholder="Idea Title" maxlength="60">
+        <div id="title_message"></div>
+        <input type="text" name="description" id="description" class="form-control my-2" placeholder="Short description" maxlength="150">
+        <div id="description_message"></div>
+        <textarea name="explanation" id="explanation" cols="30" rows="5" placeholder="Explanation of Idea" class="form-control my-2"></textarea>
+        <div id="explanation_message"></div>
+        <p>Will You be working on this Idea?<p>
+            <label for="yes">
+            <input type="radio" name="include_user" id="yes" value="1" class="radio">
+            Yes
+        </label>
+        <br>
+        <label for="no">
+            <input type="radio" name="include_user" id="no" value="0" class="radio" checked>
+            No
+        </label>
+        <div id="secondary"></div>
+        <input type="submit" id="submit" value="Add Idea" class="btn btn-primary btn-sm" role="button">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% if idea.status_updates %}
+            <div class="card m-4">
+                <h2 class="text-primary text-center">Status Updates:</h2>
+                {% for update in idea.status_updates %}
+                <div class="card bg-dark m-2">
+                    <h3 class="text-center">{{update.username}} says:</h3>
+                    <p class="mx-2">{{update.text}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}

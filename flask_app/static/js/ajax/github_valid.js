@@ -1,0 +1,32 @@
+$(document).ready(function(){
+    $('#submit').prop('disabled',true);
+    $('#github_url').keyup(function(){
+        var data = $("#gitform").serialize();
+        $.ajax({
+            method:'POST',
+            url:`/ajax/idea/github_check`,
+            data:data
+        }).done(function(results){
+            console.log(results)
+            $("#git_message").html(results);
+            if(results.length>3){
+                $('#submit').prop('disabled',true);
+            }else{
+                $('#submit').prop('disabled',false);
+            }
+        });
+    });
+    $("#gitform").submit(function(e){
+        var data = $("#gitform").serialize();
+        e.preventDefault();
+        $.ajax({
+            method:'POST',
+            url:`/ajax/idea/github_submit`,
+            data:data
+        }).done(function(results){
+            if(results.length>3){
+                $("#github").html(results);
+            }
+        });
+    });
+});

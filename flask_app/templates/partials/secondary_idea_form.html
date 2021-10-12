@@ -1,0 +1,8 @@
+{% if stacks %}
+<p>Which stack will this Idea be using?</p>
+<select name="stack_id" id="stack_id" class="form-select mb-2">
+    {% for stack in stacks %}
+        <option value="{{stack.stack_id}}">{{stack.name}}</option>
+    {% endfor %}
+</select>
+{% endif %}

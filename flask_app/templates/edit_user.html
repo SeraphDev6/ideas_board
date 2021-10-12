@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block title %}{{user.username}}'s Ideas{% endblock %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/update_user.js')}}"></script>
+{% endblock %}
+{% block content %}
+<form class="card bg-dark text-white p-4" action="/users/update/{{user.id}}" id="updform" method="POST">
+    <img src="{{url_for('static', filename='img/profile_pics/default.jpg')}}" alt="profile picture for {{user.username}}" width="30%">
+    <div>
+        <input type="text" name="username" id="username" value="{{user.username}}" class="my-2 form-control">
+        <div id="username_message"></div>
+    </div>
+    <h3>Stacks Known: </h3>
+    {% for stack in stacks %}
+        <label for="{{stack.id}}" class="text-white">
+        <input type="checkbox" name="{{stack.id}}" id="{{stack.id}}" class=""{% for stack_known in user.known_stacks if stack_known.stack_id == stack.id %}checked{% endfor %}>
+        {{stack.name}}</label>
+    {% endfor %}
+    <p><label for="github_profile">Github Profile:</label> <input type="text" name="github_profile" id="github_profile" value="{{user.github_profile}}" class="form-control"></p>
+    <button type="submit" class="btn btn-primary btn-sm" role="button">Confirm</button>
+    <a href="/users/{{user.id}}" class="btn btn-danger btn-sm" role="button">Cancel</a>
+    <h3>Projects:</h3>
+    {% for idea in user.teams_on %}
+    <p><a href="/ideas/{{idea.id}}" class="mx-4 my-0 text-white">{{idea.title}}</a><button id={{idea.id}} class="btn btn-danger btn-sm" role="button">Leave</button></p>
+    {% endfor %}
+
+</form>
+{% endblock %}

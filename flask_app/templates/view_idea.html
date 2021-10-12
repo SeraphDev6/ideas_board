@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/github_valid.js')}}"></script>
+<script src="{{url_for('static', filename='js/ajax/request_actions.js')}}"></script>
+<script src="{{url_for('static', filename='js/ajax/status_updates.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="card bg-dark text-white">
+    <div class="card m-4">
+        <h2 class="text-primary text-center">{{idea.title}}</h2>
+        <h5 class="mx-2 text-center" >Description:</h5>
+        <p class="mx-4 text-center">{{idea.description}}</p>
+        <h5 class="mx-2 text-center">Explanation:</h5>
+        <p class="mx-4 text-center">{{idea.explanation|newline_to_br}}</p>
+        <p class="mx-2 text-center">Stack used: </p>
+        <p class="mx-2 text-center">{% if idea.stack %}{{ idea.stack['name'] }}{% else %}None...{% if user and user.known_stacks %}  <a href="/ideas/claim/{{idea.id}}" class="text-white">Claim this Idea</a>{% endif %}{% endif %}</p>
+        {% if idea.team %}
+        <p class="mx-2 my-0 text-center">Team members:</p>
+        <p class="mx-2 my-0 text-center">
+            <div id="team_members" class="text-center my-0">
+                {% for user in idea.team %}
+                <a href="/users/{{user.id}}" class="text-white">{{user.username}}{% if user.id == session['user'] %} (You) {% endif %}</a><br>
+                {% if user.id == session['user'] %}
+                {% if not idea.github_url %}
+                <div id="github" class="p-4 text-center">
+                    <form action="#" method="POST" id="gitform">
+                        <input type="text" name="github_url" id="github_url" placeholder="Add a GitHub URL here" class="form-control my-2">
+                        <div id="git_message"></div>
+                        <input type="submit" value="Add URL" class="btn btn-sm btn-primary" id='submit'>
+                        <input type="hidden" name="idea" value="{{idea.id}}">
+                    </form>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% for user in idea.eligable_members if user['id'] == session['user']%}
+                <button id="{{idea.title}}" class="join btn btn-primary btn-sm">Request to Join</button>
+            {% endfor %}
+        </p>
+        {% endif %}
+            {% if idea.github_url %}
+            <h5 class="text-center">Github</h5>
+            <a href="{{idea.github_url}}" target="_" class="text-white text-center">Check it out on Github!</a>
+            {% endif %}
+        </div>
+        {% for user in idea.team if user.id == session['user'] %}
+        <div class="card m-4">
+            <h2 class="text-center">Requests to join:</h2>
+            {% for request in idea.requests %}
+            <div class="card bg-dark mx-5 mb-5">
+
+                <h4 class="text-center"><a href="/users/{{request.user_id}}">{{request.username}}:</a></h4>
+                <p class="text-center">{{request.message}}</p>
+                <div class="text-center mb-2">
+                    <button class="btn btn-sm btn-success approve" team="{{request.team_id}}" user="{{request.user_id}}" >Approve</button>
+                    <button class="btn btn-sm btn-danger deny" team="{{request.team_id}}" user="{{request.user_id}}" >Deny</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="card m-4 px-4 pb-2">
+            <h2 class="text-center">Post Update:</h2>
+            <div>
+            <input type="text" name="update" id="update" placeholder="Update Message" class="form-control">
+            <div id="update_message"></div>
+            <button class="btn btn-primary btn-sm text-center my-2" id="add_update" idea="{{idea.id}}">Add Update</button>
+            </div>
+        </div>
+        {% endfor %}
+        <div id="update_div">
+            {% if idea.status_updates %}
+            <div class="card m-4">
+                <h2 class="text-primary text-center">Status Updates:</h2>
+                {% for update in idea.status_updates %}
+                <div class="card bg-dark m-2">
+                    <h3 class="text-center">{{update.username}} says:</h3>
+                    <p class="mx-2">{{update.text}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+</div>
+{% endblock %}

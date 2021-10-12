@@ -14,7 +14,12 @@
         <div id="password_message"></div>
         <input type="password" name="confirm_password" id="confirm_password" class="form-control my-2" placeholder="Confirm Password">
         <div id="confirm_password_message"></div>
-        <input type="submit" value="Register" id="submit" class="btn btn-primary m-2">
+        {% for stack in stacks %}
+        <label for="{{stack.id}}" class="text-white">
+        <input type="checkbox" name="{{stack.id}}" id="{{stack.id}}" class="">
+        {{stack.name}}</label>
+        {% endfor %}
+        <input type="submit" value="Register" id="submit" class="btn btn-primary btn-sm m-2" role="button">
     </form>
 </div>
 {% endblock %}

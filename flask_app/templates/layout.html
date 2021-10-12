@@ -31,7 +31,7 @@
                     <div class="navbar-nav">
                         {% if 'user' in session %}
                             <a class="nav-item nav-link" href="/ideas/new">New Idea</a>
-                            <a class="nav-item nav-link" href="/users/{{user.id}}">Account</a>
+                            <a class="nav-item nav-link" href="/users/{{session['user']}}">Account</a>
                             <a class="nav-item nav-link" href="/logout">Logout</a>
                         {% else %}
                             <a class="nav-item nav-link" href="/login">Login</a>

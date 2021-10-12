@@ -1,10 +1,34 @@
 {% extends 'layout.html' %}
+{% block script %}
+<script src="{{url_for('static', filename='js/ajax/index.js')}}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="card bg-dark text-white">
     {% for idea in ideas %}
     <div class="card m-4">
-        <h2 class="text-primary text-center">{{idea.title}}</h2>
-        <p>{{idea.description}}</p>
+        <a href="/ideas/{{idea.id}}"><h2 class="text-primary text-center">{{idea.title}}</h2></a>
+        <p class="mx-2 text-center">{{idea.description}}</p>
+        <p class="mx-2 text-center">Stack used: {% if idea.stack %}{{ idea.stack['name'] }}{% else %}None...{% if user and user.known_stacks %}  <a href="/ideas/claim/{{idea.id}}" class="text-white">Claim this Idea</a>{% endif %}{% endif %}</p>
+        {% if idea.team %}
+        <p class="mx-2 text-center">Team members: <br>
+            {% for user in idea.team %}
+            <a href="/users/{{user.id}}" class="text-white">{{user.username}}{% if user.id == session['user'] %} (You) {% endif %}</a><br>
+            {% endfor %}
+            {% for user in idea.eligable_members if user['id'] == session['user']%}
+            <div class="text-center my-0">
+                <button id="{{idea.title}}" class="join btn btn-primary btn-sm" idea="{{idea.id}}" user="{{session['user']}}">Request to Join</button>
+            </div>
+            {% endfor %}
+            {% for user in idea.requests if user['user_id'] == session['user']%}
+            <button id="{{idea.title}}" class="btn btn-secondary btn-sm" disabled>Request Sent</button>
+            {% endfor %}
+
+        </p>
+        {% endif %}
+        {% if idea.github_url%}
+        <a href="{{idea.github_url}}" target="_" class="text-white text-center">Check it out on Github!</a>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

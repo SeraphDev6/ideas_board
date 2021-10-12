@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block title %}{{user.username}}'s Ideas{% endblock %}
+{% block script %}
+{% endblock %}
+{% block content %}
+<div class="card bg-dark text-white p-4">
+    <img src="{{url_for('static', filename='img/profile_pics/default.jpg')}}" alt="profile picture for {{user.username}}" width="30%">
+    <div>
+        <h1 class="text-primary d-inline-block">{{user.username}}</h2>
+        {% if 'user' in session and session['user'] == user.id %}
+            <a href="/users/edit/{{user.id}}" class="d-inline-block float-right">edit</a>
+        {% endif %}
+    </div>
+    <h3>Stacks Known: </h3>
+    {% for stack in user.known_stacks %}<p class="mx-4 my-0">{{stack['name']}}</p>{% else %}<p>This user doesn't know any stacks :( </p>{% endfor %}
+    <p class="my-2">Github Profile: <a href="https://github.com/{{user.github_profile}}" target="_">{{user.github_profile}}</a></p>
+    <h3>Projects:</h3>
+    {% for idea in user.teams_on %}<a href="/ideas/{{idea.id}}" class="mx-4 my-0 text-white">{{idea.title}}</a>{% else %}<p>This user isn't part of a team :(</p>{% endfor %}
+</div>
+
+{% endblock %}

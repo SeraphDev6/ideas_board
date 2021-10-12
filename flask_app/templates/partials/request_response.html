@@ -1,0 +1,9 @@
+{% if approved %}
+<h4 class="text-success text-center">{{user.username}} has successfully joined {{idea.title}}'s team!</h4>
+{% else %}
+    {% if error == 'invalid' %}
+    <h4 class="text-danger text-center">{{user.username}} does not meet the requirements to join {{idea.title}}'s team.</h4>
+    {% elif error == 'denied' %}
+    <h4 class="text-danger text-center">{{user.username}} has been denied access to {{idea.title}}'s team.</h4>
+    {% endif %}
+{% endif %}
